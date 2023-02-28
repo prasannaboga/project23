@@ -15,7 +15,7 @@ gem "puma", "5.6.5"
 gem "rails", "7.0.4.2"
 gem "redis", "5.0.6"
 gem "stimulus-rails", "1.2.1"
-gem "tailwindcss-rails"
+gem "tailwindcss-rails", "2.0.23"
 gem "turbo-rails", "1.3.3"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
