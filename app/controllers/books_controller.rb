@@ -55,6 +55,28 @@ class BooksController < ApplicationController
     end
   end
 
+  def search
+    a = 0
+    b = 0
+    # c = a
+
+    raise "Exception #10"
+
+    render json: a
+  rescue StandardError => e
+    Sentry.with_scope do |scope|
+      scope.set_tags(books: "books")
+      scope.set_context(
+        "booksinfo", {
+          a: "Apple",
+          b: "Ball"
+        }
+      )
+      Sentry.capture_message(e.message)
+    end
+    render json: e.message
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
