@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  container-project23:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ..:/customPath
+    user: vscode
+    command: sleep infinity

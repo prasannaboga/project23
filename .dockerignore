@@ -1,0 +1,16 @@
+.DS_Store
+.vscode
+.devcontainer
+node_modules
+dist
+chromium
+tmp
+.git
+.gitignore
+.gitattributes
+.env-example
+.env
+Dockerfile
+.dockerignore
+README.md
+LICENSE

@@ -26,7 +26,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "rack-mini-profiler"
+  # gem "rack-mini-profiler"
   gem "rubocop-rails", "2.18", require: false
   gem "solargraph", "0.48.0"
   gem "solargraph-rails", "1.1"

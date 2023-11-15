@@ -1,0 +1,36 @@
+FROM ubuntu:18.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -qq
+RUN apt-get install -y apt-utils \
+  build-essential \
+  curl \
+  dpkg \
+  git \
+  gpg \
+  imagemagick \
+  libmysqlclient-dev \
+  mysql-client \
+  poppler-data \
+  poppler-utils \
+  software-properties-common \
+  unixodbc \
+  unixodbc-dev \
+  wget \
+  zsh
+
+RUN wget -O /tmp/snowflake.deb https://sfc-repo.snowflakecomputing.com/odbc/linux/2.22.5/snowflake-odbc-2.22.5.x86_64.deb
+RUN dpkg -i /tmp/snowflake.deb
+RUN apt-get install -f
+
+RUN apt-get clean && apt-get autoremove -y
+
+RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+RUN \curl -L https://get.rvm.io | bash -s stable
+RUN echo 'source /usr/local/rvm/scripts/rvm' >> /etc/bash.bashrc
+ENV PATH /usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN /bin/bash -l -c "rvm requirements"
+RUN /bin/bash -l -c "rvm install ruby-3.2.1"
+RUN echo 'gem: --no-document' >> ~/.gemrc
+RUN /bin/bash -l -c "gem install bundler"
