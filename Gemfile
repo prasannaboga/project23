@@ -23,12 +23,15 @@ gem "tzinfo-data"
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "rspec-rails", "6.0.3"
+  gem "simplecov", "0.22.0", require: false
 end
 
 group :development do
   gem "rack-mini-profiler"
-  gem "rubocop-rails", "2.18", require: false
-  gem "solargraph", "0.48.0"
+  gem "rubocop-rails", "2.22.1", require: false
+  gem "rubocop-rspec", "2.25.0", require: false
+  gem "solargraph", "0.49.0"
   gem "solargraph-rails", "1.1"
   gem "spring"
   gem "web-console"
