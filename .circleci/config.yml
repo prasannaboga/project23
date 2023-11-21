@@ -74,7 +74,9 @@ jobs:
           command: |
             sonar-scanner \
               -X \
-              -Dsonar.host.url=$SONAR_HOST_URL
+              -Dsonar.host.url=$SONAR_HOST_URL \
+              -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.ruby.coverage.reportPaths=coverage/.resultset.json
       - store_test_results:
           path: rspec-results
       - store_artifacts:
