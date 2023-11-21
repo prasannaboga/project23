@@ -8,7 +8,7 @@ jobs:
   build:
     working_directory: opt/app
     docker:
-      - image: cimg/3.2.1-node
+      - image: circleci/ruby:3.2.1
         environment:
           RAILS_ENV: test
           MYSQL_USERNAME: root
