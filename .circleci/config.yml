@@ -72,6 +72,8 @@ jobs:
       - run:
           name: Running sonar-scanner
           command: |
+            echo $SONAR_HOST_URL
+            echo $SONAR_TOKEN
             sonar-scanner \
               -Dsonar.host.url=$SONAR_HOST_URL
       - store_test_results:
