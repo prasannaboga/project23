@@ -6,23 +6,29 @@ orbs:
 
 jobs:
   build:
-    working_directory: opt/app
+    working_directory: ~/project23
     docker:
       - image: cimg/ruby:3.2.1
         environment:
           RAILS_ENV: test
-          MYSQL_USERNAME: root
+          MYSQL_USERNAME: project23_user
           MYSQL_PASSWORD: mysqlpassword
       - image: mysql:5.7
         environment:
           MYSQL_DATABASE: project23_test
           MYSQL_ROOT_PASSWORD: mysqlpassword
+          MYSQL_USER: project23_user
           MYSQL_PASSWORD: mysqlpassword
     environment:
       BUNDLE_JOBS: 4
       BUNDLE_PATH: vendor/bundle
       BUNDLE_RETRY: 3
       BUNDLER_VERSION: 2.1.4
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PASSWORD: mysqlpassword
+      MYSQL_USERNAME: project23_user
+      RAILS_ENV: test
+      RACK_ENV: test
     steps:
       - checkout
       - setup_remote_docker
@@ -47,8 +53,10 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            bundle exec rspec
+            mkdir ~/project23/rspec-results
+            bundle exec rspec --format progress --format RspecJunitFormatter --out ~/project23/rspec-results/rspec.xml
+          when: always
       - store_test_results:
-          path: coverage
+          path: ~/project23/rspec-results
       - store_artifacts:
           path: coverage
