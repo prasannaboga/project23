@@ -68,6 +68,11 @@ jobs:
             mkdir ~/project23/rspec-results
             bundle exec rspec --format progress --format RspecJunitFormatter -o rspec-results/rspec.xml
           when: always
+      - run:
+          name: Running sonar-scanner
+          command: |
+            sonar-scanner \
+              -Dsonar.host.url=$SONAR_HOST_URL
       - store_test_results:
           path: rspec-results
       - store_artifacts:
