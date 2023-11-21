@@ -53,8 +53,9 @@ jobs:
       - run:
           name: Run RSpec
           command: |
+            mkdir ~/project23/rspec-results
             bundle exec rspec
       - store_test_results:
-          path: rspec-results
+          path: ~/project23/rspec-results
       - store_artifacts:
           path: coverage
