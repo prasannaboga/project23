@@ -23,6 +23,9 @@ jobs:
       BUNDLE_PATH: vendor/bundle
       BUNDLE_RETRY: 3
       BUNDLER_VERSION: 2.1.4
+      MYSQL_PASSWORD: mysqlpassword
+      MYSQL_USERNAME: root
+      RAILS_ENV: test
     steps:
       - checkout
       - setup_remote_docker
