@@ -54,8 +54,7 @@ jobs:
           name: Run RSpec
           command: |
             mkdir ~/project23/rspec-results
-            bundle exec rspec --format progress --format RspecJunitFormatter --out ~/project23/rspec-results/rspec.xml
-          when: always
+            bundle exec rspec
       - store_test_results:
           path: ~/project23/rspec-results
       - store_artifacts:
