@@ -26,6 +26,7 @@ jobs:
       MYSQL_PASSWORD: mysqlpassword
       MYSQL_USERNAME: root
       RAILS_ENV: test
+      RACK_ENV: test
     steps:
       - checkout
       - setup_remote_docker
