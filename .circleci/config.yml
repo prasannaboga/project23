@@ -51,10 +51,13 @@ jobs:
             bundle exec rake db:create
             bundle exec rake db:schema:load
       - run:
-          name: Run RSpec
+          name: Create test results
           command: |
             mkdir ~/project23/rspec-results
             ls -la
+      - run:
+          name: Run RSpec
+          command: |
             bundle exec rspec
       - store_test_results:
           path: ~/project23/rspec-results
