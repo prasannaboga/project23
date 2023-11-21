@@ -13,7 +13,7 @@ jobs:
           RAILS_ENV: test
           MYSQL_USERNAME: project23_user
           MYSQL_PASSWORD: mysqlpassword
-      - image: mysql:5.7
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_DATABASE: project23_test
           MYSQL_ROOT_PASSWORD: mysqlpassword
@@ -48,6 +48,7 @@ jobs:
       - run:
           name: Database setup
           command: |
+            sleep 20
             bundle exec rake db:create
             bundle exec rake db:schema:load
       - run:
