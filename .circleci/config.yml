@@ -27,26 +27,37 @@ jobs:
       MYSQL_HOST: 127.0.0.1
       MYSQL_PASSWORD: mysqlpassword
       MYSQL_USERNAME: project23_user
-      RAILS_ENV: test
       RACK_ENV: test
+      RAILS_ENV: test
+      SONAR_SCANNER_HOME: $HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+      SONAR_SCANNER_VERSION: 5.0.1.3006
+      SONAR_SCANNER_OPTS: "-server"
     steps:
       - checkout
       - setup_remote_docker
       - restore_cache:
           keys:
             - project23-app-{{ checksum "Gemfile.lock" }}
+            - project23-app-{{ "$SONAR_SCANNER_VERSION" }}
             - project23-app-
       - run:
-          name: Install dependencies
+          name: Install Dependencies
           command: |
             gem install bundler
             bundle install
+      - run:
+          name: Install Sonar Scanner
+          command: |
+            curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+            unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+            export PATH=$SONAR_SCANNER_HOME/bin:$PATH
       - save_cache:
           key: project23-app-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+            - $HOME/.sonar/
       - run:
-          name: Database setup
+          name: Database Setup
           command: |
             sleep 20
             bundle exec rake db:create
