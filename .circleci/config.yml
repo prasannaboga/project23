@@ -11,15 +11,13 @@ jobs:
       - image: cimg/ruby:3.2.1
         environment:
           RAILS_ENV: test
-          MYSQL_USERNAME: root
-          MYSQL_PASSWORD: root
+          MYSQL_USERNAME: mysqlusername
+          MYSQL_PASSWORD: mysqlpassword
       - image: mysql:5.7
         environment:
-          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: project23_test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_USER: mysqlusername
+          MYSQL_PASSWORD: mysqlpassword
     environment:
       BUNDLE_JOBS: 4
       BUNDLE_PATH: vendor/bundle
