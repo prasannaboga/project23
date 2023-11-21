@@ -1,0 +1,56 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@2.1.0
+  node: circleci/node@5.1.0
+
+jobs:
+  build:
+    working_directory: opt/app
+    docker:
+      - image: cimg/3.2.1-node
+        environment:
+          RAILS_ENV: test
+          MYSQL_USERNAME: root
+          MYSQL_PASSWORD: root
+      - image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: project23_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    environment:
+      BUNDLE_JOBS: 4
+      BUNDLE_PATH: vendor/bundle
+      BUNDLE_RETRY: 3
+      BUNDLER_VERSION: 2.1.4
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - project23-app-{{ checksum "Gemfile.lock" }}
+            - project23-app-
+      - run:
+          name: Install dependencies
+          command: |
+            gem install bundler
+            bundle install
+      - save_cache:
+          key: project23-app-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+      - run:
+          name: Run RSpec
+          command: |
+            bundle exec rspec
+      - store_test_results:
+          path: coverage
+      - store_artifacts:
+          path: coverage
