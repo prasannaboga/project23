@@ -1,24 +1,9 @@
-# README
+# Project23
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+# CircleCI
 
-* Ruby version
+Status [![CircleCI](https://dl.circleci.com/status-badge/img/gh/prasannaboga/project23/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/prasannaboga/project23/tree/main)
 
-* System dependencies
+### Insights Snapshot Badge
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
