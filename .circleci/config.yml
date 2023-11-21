@@ -6,7 +6,7 @@ orbs:
 
 jobs:
   build:
-    working_directory: opt/app
+    working_directory: /opt/app
     docker:
       - image: cimg/ruby:3.2.1
         environment:
