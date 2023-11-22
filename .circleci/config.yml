@@ -30,7 +30,8 @@ jobs:
       RACK_ENV: test
       RAILS_ENV: test
       SONAR_SCANNER_VERSION: 5.0.1.3006
-      SONAR_SCANNER_OPTS: "-server"
+      SONAR_SCANNER_OPTS: "-server --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED"
+    parallelism: 2
     steps:
       - checkout
       - setup_remote_docker
@@ -67,16 +68,16 @@ jobs:
           name: Run RSpec
           command: |
             mkdir ~/project23/rspec-results
-            bundle exec rspec --format progress --format RspecJunitFormatter -o rspec-results/rspec.xml
+            TESTFILES=$(circleci tests glob "spec/**/*.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec —- ${TESTFILES} --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml
           when: always
       - run:
           name: Running sonar-scanner
           command: |
             sonar-scanner \
-              -X \
               -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONAR_TOKEN \
-              -Dsonar.ruby.coverage.reportPaths=coverage/.resultset.json
+              -Dsonar.token=$SONAR_TOKEN \
+              -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json
       - store_test_results:
           path: rspec-results
       - store_artifacts:

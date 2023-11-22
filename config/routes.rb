@@ -5,10 +5,9 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+    resources :comments
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :comments
 
-  # Defines the root path route ("/")
-  # root "articles#index"
   root "books#index"
 end
