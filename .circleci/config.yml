@@ -45,10 +45,10 @@ jobs:
           command: |
             gem install bundler
             bundle install
-      - run:
-          name: Install Node
-          command: |
-            git clone https://github.com/tj/n.git && n/bin/n 16.14.2
+      - node/install:
+          install-yarn: true
+          node-version: '16.13'
+      - run: node --version
       - run:
           name: Install Sonar Scanner
           command: |
@@ -73,7 +73,6 @@ jobs:
           command: |
             mkdir ~/project23/rspec-results
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-            echo $(TESTFILES)
             bundle exec rspec $(TESTFILES) --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml --format RspecSonarqubeFormatter -o rspec-sonarqube.xml
           when: always
       - run:
