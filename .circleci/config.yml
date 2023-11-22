@@ -30,7 +30,6 @@ jobs:
       RACK_ENV: test
       RAILS_ENV: test
       SONAR_SCANNER_VERSION: 5.0.1.3006
-      SONAR_SCANNER_OPTS: "-server --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED"
     parallelism: 2
     steps:
       - checkout
@@ -55,7 +54,7 @@ jobs:
             curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
             unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
             echo 'export PATH=$SONAR_SCANNER_HOME/bin:$PATH' >> $BASH_ENV
-            echo 'export SONAR_SCANNER_OPTS="-server"' >> $BASH_ENV
+            echo 'export SONAR_SCANNER_OPTS="-server --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED"' >> $BASH_ENV
       - save_cache:
           key: project23-app-{{ checksum "Gemfile.lock" }}
           paths:
