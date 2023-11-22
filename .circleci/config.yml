@@ -68,8 +68,9 @@ jobs:
           name: Run RSpec
           command: |
             mkdir ~/project23/rspec-results
-            TESTFILES=$(circleci tests glob "spec/**/*.rb" | circleci tests split --split-by=timings)
-            bundle exec rspec —- ${TESTFILES} --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml
+            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            echo TESTFILES
+            bundle exec rspec $(TESTFILES) --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml
           when: always
       - run:
           name: Running sonar-scanner
