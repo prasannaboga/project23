@@ -46,6 +46,10 @@ jobs:
             gem install bundler
             bundle install
       - run:
+          name: Install Node
+          command: |
+            git clone https://github.com/tj/n.git && n/bin/n 16.14.2
+      - run:
           name: Install Sonar Scanner
           command: |
             echo 'export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux' >> $BASH_ENV
@@ -69,8 +73,8 @@ jobs:
           command: |
             mkdir ~/project23/rspec-results
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-            echo TESTFILES
-            bundle exec rspec $(TESTFILES) --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml
+            echo $(TESTFILES)
+            bundle exec rspec $(TESTFILES) --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml --format RspecSonarqubeFormatter -o rspec-sonarqube.xml
           when: always
       - run:
           name: Running sonar-scanner
@@ -78,7 +82,8 @@ jobs:
             sonar-scanner \
               -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.token=$SONAR_TOKEN \
-              -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json
+              -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json \
+              -Dsonar.testExecutionReportPaths=rspec-sonarqube.xml
       - store_test_results:
           path: rspec-results
       - store_artifacts:

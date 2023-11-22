@@ -37,3 +37,4 @@ coverage/
 .DS_Store
 rspec.xml
 .scannerwork
+rspec-sonarqube.xml

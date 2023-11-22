@@ -25,6 +25,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "rspec_junit_formatter", "0.6.0", require: false
   gem "rspec-rails", "6.0.3"
+  gem "rspec-sonarqube-formatter", "1.5", require: false
   gem "simplecov", "0.22.0", require: false
   gem "simplecov_json_formatter", "0.1.4"
 end
