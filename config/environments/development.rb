@@ -67,4 +67,6 @@ Rails.application.configure do
   if defined?(Rack::MiniProfiler)
     Rack::MiniProfiler.config.enabled = (ENV.fetch("MINIPROFILER_ENABLED", "true") == "true")
   end
+
+  config.action_mailer.default_url_options = { host: "localhost", port: 5001 }
 end

@@ -38,5 +38,7 @@ module Project23
       g.test_framework :rspec
       g.orm :active_record
     end
+
+    config.hosts << "transform.cisco.local"
   end
 end

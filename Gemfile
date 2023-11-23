@@ -3,8 +3,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 
+gem "addressable", "2.8.5"
 gem "bcrypt", "3.1.7"
 gem "bootsnap", require: false
+gem "devise", "4.9"
 gem "image_processing", "1.2"
 gem "importmap-rails", "1.1.5"
 gem "jbuilder", "2.11.5"
