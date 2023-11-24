@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "omniauth-okta"
+
 # Assuming you have not yet modified this file, each configuration option below
 # is set to its default value. Note that some are commented out while others
 # are not: uncommented lines are intended to protect your configuration from
@@ -310,4 +312,18 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  config.omniauth(:okta,
+                  ENV.fetch("OKTA_CLIENT_ID", nil),
+                  ENV.fetch("OKTA_CLIENT_SECRET", nil),
+                  scope: "openid profile email",
+                  fields: %w[profile email],
+                  response_type: :code,
+                  uid_field: "email",
+                  issuer: "https://#{ENV.fetch('OKTA_CLIENT_HOST', nil)}/oauth2/default",
+                  discovery: true,
+                  client_options: {
+                    site: "https://#{ENV.fetch('OKTA_CLIENT_HOST', nil)}",
+                    redirect_uri: ENV.fetch("OKTA_REDIRECT_URI", nil)
+                  },
+                  strategy_class: OmniAuth::Strategies::Okta)
 end
