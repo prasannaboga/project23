@@ -5,19 +5,34 @@ orbs:
   node: circleci/node@5.1.0
 
 jobs:
-  build:
+  database_mysql:
+    docker:
+      - image: cimg/mysql:5.7
+        environment:
+          MYSQL_DATABASE: project23_test
+          MYSQL_ROOT_PASSWORD: mysqlpassword
+          MYSQL_USER: project23_user
+          MYSQL_PASSWORD: mysqlpassword
+    steps:
+      - run:
+          name: Database Setup
+          command: |
+            echo "MYSQL DB"
+  database_mongodb:
+    docker:
+      - image: mongo:7.0.3
+    steps:
+      - run:
+          name: Database Setup
+          command: |
+            echo "MongoDB"
+  rspec_build:
     working_directory: ~/project23
     docker:
       - image: cimg/ruby:3.2.1
         environment:
           RAILS_ENV: test
           MYSQL_USERNAME: project23_user
-          MYSQL_PASSWORD: mysqlpassword
-      - image: cimg/mysql:5.7
-        environment:
-          MYSQL_DATABASE: project23_test
-          MYSQL_ROOT_PASSWORD: mysqlpassword
-          MYSQL_USER: project23_user
           MYSQL_PASSWORD: mysqlpassword
     environment:
       BUNDLE_JOBS: 4
@@ -46,7 +61,7 @@ jobs:
             bundle install
       - node/install:
           install-yarn: true
-          node-version: '20.9'
+          node-version: "20.9"
       - run:
           name: Install Sonar Scanner
           command: |
@@ -85,3 +100,10 @@ jobs:
           path: rspec-results
       - store_artifacts:
           path: coverage
+
+workflows:
+   rspec_workflow:
+      jobs:
+        - database_mysql
+        - database_mongodb
+        - rspec_build
