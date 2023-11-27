@@ -78,16 +78,6 @@ jobs:
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
             bundle exec rspec $(TESTFILES) --format progress --format RspecJunitFormatter -o rspec-results/rspec-$CIRCLE_NODE_INDEX.xml --format RspecSonarqubeFormatter -o rspec-sonarqube.xml
           when: always
-  upload_reports:
-    docker:
-      - image: cimg/ruby:3.2.1
-        environment:
-          RAILS_ENV: test
-          MYSQL_USERNAME: project23_user
-          MYSQL_PASSWORD: mysqlpassword
-    steps:
-      - attach_workspace:
-          at: ~/project23
       - run:
           name: Running sonar-scanner
           command: |
@@ -98,10 +88,6 @@ jobs:
               -Dsonar.token=$SONAR_TOKEN \
               -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json \
               -Dsonar.testExecutionReportPaths=rspec-sonarqube.xml
-      - persist_to_workspace:
-          root: ~/project23
-          paths:
-            - ./*
       - store_test_results:
           path: rspec-results
       - store_artifacts:
@@ -111,6 +97,3 @@ workflows:
   rspec_workflow:
     jobs:
       - rspec_run
-      - upload_reports:
-          requires:
-            - rspec_run
