@@ -63,7 +63,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project23
           paths:
-            - echo-output
+            - ./*
       - run:
           name: Database Setup
           command: |
@@ -78,6 +78,8 @@ jobs:
           MYSQL_USERNAME: project23_user
           MYSQL_PASSWORD: mysqlpassword
     steps:
+      - attach_workspace:
+          at: ~/project23
       - run:
           name: Run RSpec
           command: |
@@ -102,4 +104,6 @@ workflows:
   rspec_workflow:
     jobs:
       - rspec_setup
-      - rspec_run
+      - rspec_run:
+          requires:
+            - rspec_setup
