@@ -5,28 +5,7 @@ orbs:
   node: circleci/node@5.1.0
 
 jobs:
-  database_mysql:
-    docker:
-      - image: cimg/mysql:5.7
-        environment:
-          MYSQL_DATABASE: project23_test
-          MYSQL_ROOT_PASSWORD: mysqlpassword
-          MYSQL_USER: project23_user
-          MYSQL_PASSWORD: mysqlpassword
-    steps:
-      - run:
-          name: Database Setup
-          command: |
-            echo "MYSQL DB"
-  database_mongodb:
-    docker:
-      - image: mongo:7.0.3
-    steps:
-      - run:
-          name: Database Setup
-          command: |
-            echo "MongoDB"
-  rspec_build:
+  rspec_setup:
     working_directory: ~/project23
     docker:
       - image: cimg/ruby:3.2.1
@@ -34,6 +13,13 @@ jobs:
           RAILS_ENV: test
           MYSQL_USERNAME: project23_user
           MYSQL_PASSWORD: mysqlpassword
+      - image: cimg/mysql:5.7
+        environment:
+          MYSQL_DATABASE: project23_test
+          MYSQL_ROOT_PASSWORD: mysqlpassword
+          MYSQL_USER: project23_user
+          MYSQL_PASSWORD: mysqlpassword
+      - image: mongo:7.0.3
     environment:
       BUNDLE_JOBS: 4
       BUNDLE_PATH: vendor/bundle
@@ -45,7 +31,6 @@ jobs:
       RACK_ENV: test
       RAILS_ENV: test
       SONAR_SCANNER_VERSION: 5.0.1.3006
-    parallelism: 2
     steps:
       - checkout
       - setup_remote_docker
@@ -75,12 +60,24 @@ jobs:
           paths:
             - vendor/bundle
             - $HOME/.sonar/
+      - persist_to_workspace:
+          root: ~/project23
+          paths:
+            - echo-output
       - run:
           name: Database Setup
           command: |
             sleep 20
             bundle exec rake db:create
             bundle exec rake db:schema:load
+  rspec_run:
+    docker:
+      - image: cimg/ruby:3.2.1
+        environment:
+          RAILS_ENV: test
+          MYSQL_USERNAME: project23_user
+          MYSQL_PASSWORD: mysqlpassword
+    steps:
       - run:
           name: Run RSpec
           command: |
@@ -102,8 +99,7 @@ jobs:
           path: coverage
 
 workflows:
-   rspec_workflow:
-      jobs:
-        - database_mysql
-        - database_mongodb
-        - rspec_build
+  rspec_workflow:
+    jobs:
+      - rspec_setup
+      - rspec_run

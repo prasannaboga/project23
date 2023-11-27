@@ -2,12 +2,10 @@ class RerouteController < ApplicationController
   def okta_authorize
     @url = params["url"]
 
-    final_url = if @url.blank?
-                  @url
-                else
-                  prepare_callback
-                end
+    # here need to authentication process and okta session
+    # can be create cross domain cookie
 
+    final_url = prepare_callback
     redirect_to final_url, allow_other_host: true
   end
 
