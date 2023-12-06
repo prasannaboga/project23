@@ -10,6 +10,12 @@ class Book < ApplicationRecord
     abc.gsub("New", "---")
   end
 
+  def sub
+    a = 1
+    b = 2
+    c = x + y
+  end
+
   def add(x, y)
     x1 = x
     y1 = y
