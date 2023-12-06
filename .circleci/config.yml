@@ -81,11 +81,16 @@ jobs:
       - run:
           name: Running sonar-scanner
           command: |
-            sonar-scanner \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.token=$SONAR_TOKEN \
-              -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json \
-              -Dsonar.testExecutionReportPaths=rspec-sonarqube.xml
+            if [ $CIRCLE_NODE_INDEX -eq 0 ]
+            then
+              sonar-scanner \
+                -Dsonar.host.url=$SONAR_HOST_URL \
+                -Dsonar.token=$SONAR_TOKEN \
+                -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json \
+                -Dsonar.testExecutionReportPaths=rspec-sonarqube.xml
+            else
+              echo "sonar-scanner is not required **"
+            fi
           when: on_success
       - store_test_results:
           path: rspec-results
