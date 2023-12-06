@@ -1,5 +1,5 @@
 class RerouteController < ApplicationController
-  def okta_authorize
+  def authorize
     @url = params["url"]
 
     # here need to authentication process and okta session

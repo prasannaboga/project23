@@ -38,7 +38,7 @@ group :development do
   gem "rack-mini-profiler"
   gem "rubocop-rails", "2.22.1", require: false
   gem "rubocop-rspec", "2.25.0", require: false
-  gem "solargraph", "0.49.0"
+  gem "solargraph", "0.50.0"
   gem "solargraph-rails", "1.1"
   gem "spring"
   gem "web-console"
