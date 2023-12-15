@@ -26,7 +26,9 @@ gem "turbo-rails", "1.3.3"
 gem "tzinfo-data"
 
 group :development, :test do
+  gem "database_cleaner", "2.0.2"
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "mongoid-rspec", "4.1"
   gem "rspec_junit_formatter", "0.6.0", require: false
   gem "rspec-rails", "6.0.3"
   gem "rspec-sonarqube-formatter", "1.5", require: false

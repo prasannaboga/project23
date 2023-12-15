@@ -18,4 +18,16 @@ RSpec.describe Book, type: :model do
       expect(full_messages).to include("Published at can't be blank")
     end
   end
+
+  describe "#creation" do
+    it "should create a book record in mongodb" do
+      mongo_books_count = Mongodb::Book.count
+      book = Book.new(title: "Title1", description: "Description1", published_at: "2023-01-03")
+      book.save
+
+      mongo_book = Mongodb::Book.find_by(book_id: book.id)
+      expect(mongo_book.title).to eq(book.title)
+      expect(Mongodb::Book.count).to eq(mongo_books_count + 1)
+    end
+  end
 end
