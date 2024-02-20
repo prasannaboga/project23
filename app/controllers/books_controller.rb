@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
+  before_action :set_sentry_extras
 
   # GET /books or /books.json
   def index
@@ -60,21 +61,22 @@ class BooksController < ApplicationController
     b = 0
     # c = a
 
-    raise "Exception #10"
+    # raise ArgumentError.new("Exception#16")
 
-    render json: a
-  rescue StandardError => e
-    Sentry.with_scope do |scope|
-      scope.set_tags(books: "books")
-      scope.set_context(
-        "booksinfo", {
-          a: "Apple",
-          b: "Ball"
-        }
-      )
-      Sentry.capture_message(e.message)
-    end
-    render json: e.message
+
+    render json: g
+  # rescue StandardError => e
+  #   Sentry.with_scope do |scope|
+  #     scope.set_tags(books: "books")
+  #     scope.set_context(
+  #       "booksinfo", {
+  #         a: "Apple",
+  #         b: "Ball"
+  #       }
+  #     )
+  #     Sentry.capture_message(e.message)
+  #   end
+  #   render json: e.message
   end
 
   private
@@ -87,5 +89,9 @@ class BooksController < ApplicationController
   # Only allow a list of trusted parameters through.
   def book_params
     params.require(:book).permit(:title, :description, :published_at)
+  end
+
+  def set_sentry_extras
+    Sentry.set_extras(experience_type: "apple")
   end
 end
